@@ -20,10 +20,9 @@ cd ..
 echo "Starting the backend..."
 cd server
 if [ "$ENVIRONMENT" == "development" ]; then
-  uvicorn app:app --reload --host 0.0.0.0 --port 8000
+  nohup uvicorn app:app --reload --host 0.0.0.0 --port 8000 &
 else
-
-  uvicorn app:app --host 0.0.0.0 --port 8000
+  nohup uvicorn app:app --host 0.0.0.0 --port 8000 &
 fi
 cd ..
 
@@ -31,10 +30,11 @@ echo "Starting the frontend..."
 cd client
 
 if [ "$ENVIRONMENT" == "development" ]; then
-  npm start
+  nohup npm run dev -- --port 8001 &
 else
   npm run build
-  serve -s build
+  nohup serve -s build -l 8001 &
 fi
+cd ..
 
 echo "Application started successfully!"
