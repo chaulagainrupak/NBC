@@ -130,7 +130,7 @@ export default function MainList() {
 
   // Fetch books from the API on component mount
   useEffect(() => {
-    fetch("/api/books")
+    fetch("/v1/api/books")
       .then((response) => response.json())
       .then((data: Book[]) => setBooks(data))
       .catch((error) => console.error("Error fetching data:", error));
@@ -145,7 +145,7 @@ export default function MainList() {
   const handleFormSubmit = async (event: FormEvent<HTMLFormElement>): Promise<void> => {
     event.preventDefault();
 
-    const response = await fetch("/api/add", {
+    const response = await fetch("/v1/api/add", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
