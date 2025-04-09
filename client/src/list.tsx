@@ -129,7 +129,7 @@ export default function MainList() {
   const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
 
   const currentDomain = window.location.hostname;
-  const apiUrl = `https://api.${currentDomain}`;
+  const apiUrl = `https://${currentDomain.replace('nbc', 'api')}`;
 
   // Fetch books from the API on component mount
   useEffect(() => {
