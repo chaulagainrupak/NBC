@@ -9,7 +9,7 @@ interface Book {
   genre: string;
   cover_url: string;
   description: string;
-  publish_year: number;
+  publish_year: string;
 }
 
 export default function MainList() {
@@ -128,9 +128,12 @@ export default function MainList() {
 
   const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
 
+  const currentDomain = window.location.hostname;
+  const apiUrl = `https://api.${currentDomain}`;
+
   // Fetch books from the API on component mount
   useEffect(() => {
-    fetch("/v1/api/books")
+    fetch(`${apiUrl}/api/books`)
       .then((response) => response.json())
       .then((data: Book[]) => setBooks(data))
       .catch((error) => console.error("Error fetching data:", error));
@@ -145,7 +148,7 @@ export default function MainList() {
   const handleFormSubmit = async (event: FormEvent<HTMLFormElement>): Promise<void> => {
     event.preventDefault();
 
-    const response = await fetch("/v1/api/add", {
+    const response = await fetch(`${apiUrl}/api/add`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
