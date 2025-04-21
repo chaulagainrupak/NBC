@@ -200,3 +200,86 @@ def addBookToDb(bookUrl):
     
 
 
+@app.get("/api/top-books")
+async def get_top_books():
+    # Get current date
+    current_date = datetime.now()
+    
+    if current_date.month == 1:
+        previous_month = 12
+        previous_year = current_date.year - 1
+    else:
+        previous_month = current_date.month - 1
+        previous_year = current_date.year
+    
+    month_year_pattern = f"{previous_month:02d}/{previous_year}"
+    
+    connection = sqlite3.connect(database)
+    db = connection.cursor()
+    
+    books = db.execute("""
+        SELECT * FROM books WHERE added_at LIKE ?
+    """, (month_year_pattern,)).fetchall()
+    
+    connection.close()
+    
+    books_list = []
+    for book in books:
+        books_list.append({
+            "book_id": book[0],
+            "title": book[1],
+            "author": book[2],
+            "genre": book[3],
+            "cover_url": book[4],
+            "book_url": book[5],
+            "description": book[6],
+            "publish_year": book[7],
+            "added_at": book[8]
+        })
+    
+    return books_list
+
+@app.get("/top-md")
+async def get_top_books_markdown():
+    currentDate = datetime.now()
+
+    if currentDate.month == 1:
+        previousMonth = 12
+        previousYear = currentDate.year - 1
+    else:
+        previousMonth = currentDate.month - 1
+        previousYear = currentDate.year
+
+    monthYearPattern = f"{previousMonth:02d}/{previousYear}"
+    monthYearName = datetime(previousYear, previousMonth, 1).strftime("%B %Y")
+
+    connection = sqlite3.connect(database)
+    db = connection.cursor()
+    
+    books = db.execute("""
+        SELECT * FROM books WHERE added_at LIKE ?
+    """, (monthYearPattern,)).fetchall()
+
+    connection.close()
+
+    if not books:
+        return {"markdown": f"## 📚 Top Books of {monthYearName}\n\nNo books were added in {monthYearName}."}
+
+    markdownLines = [f"## 📚 Top Books of {monthYearName}\n"]
+
+    for idx, book in enumerate(books, 1):
+        title = book[1]
+        author = book[2]
+        genre = book[3]
+        bookUrl = book[5]
+        publishYear = book[7]
+
+        genreText = f"\n   - 🏷️ Genre: {genre}" if genre else ""
+        publishText = f"\n   - 🗓️ Published: {publishYear}" if publishYear else ""
+
+        line = f"{idx}. **[{title}]({bookUrl})** by *{author}*{genreText}{publishText}\n"
+        markdownLines.append(line)
+
+    markdownOutput = "\n".join(markdownLines)
+
+    return {"markdown": markdownOutput}

@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Route, Routes, Link, useLocation } from 'react-router-dom';
 import MainList from './list';
+import Top from './top';
 
 // NavBar Component
 function NavBar() {
@@ -45,7 +46,7 @@ function App() {
       {/* Define the routes */}
       <Routes>
         <Route path="/" element={<MainList />} />
-        <Route path="/top" element={<div className="text-center py-10 text-6xl">Last Month's Top <br/> <h1> NO DATA YET! COME BACK NEXT MONTH!</h1></div>} />
+        <Route path="/top" element={<Top/>}/>
         <Route path="/history" element={<div className="text-center py-10 text-6xl">Reading List History <br/> <h1> NO DATA YET! COME BACK NEXT MONTH!</h1></div>} />
       </Routes>
     </Router>

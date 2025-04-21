@@ -18,12 +18,12 @@ interface BookCardProps {
     publishYear,
   }: BookCardProps) {
     return (
-      <div className="flex flex-col md:flex-row w-full md:w-[30vw] h-auto bg-[#FEFEFA] rounded-lg shadow-lg hover:shadow-2xl transition-shadow duration-300 ease-in-out">
-        <div className="w-auto h-full bg-gray-200 rounded-t-lg md:rounded-l-lg shadow-md border-b-2 md:border-r-2 border-[#2C3E50]">
+      <div className="flex flex-col md:flex-row w-full md:w-[30vw] h-fit bg-[#FEFEFA] rounded-lg shadow-lg hover:shadow-2xl transition-shadow duration-300 ease-in-out">
+        <div className="w-auto bg-gray-200 rounded-t-lg md:rounded-l-lg shadow-md border-b-2 md:border-r-2 border-[#2C3E50]">
           <img
             src={bookCover}
             alt={`Cover for ${bookName}`}
-            className="object-cover h-full w-full shadow-lg rounded-t-lg md:rounded-l-lg"
+            className="object-fit h-full w-full shadow-lg rounded-t-lg md:rounded-l-lg"
           />
         </div>
         <div className="w-full md:w-2/3 p-3 md:p-5 flex flex-col justify-between">
